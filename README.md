@@ -30,3 +30,4 @@ x | Description
 ## Problèmes rencontrés:
 Avec la carte:
 * [Résolu] Certains lycée proposent plusieurs formations, fatalement les markeurs ses chevauchent et des informations ne sont plus accessibles
+

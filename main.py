@@ -45,6 +45,7 @@ for i in liste_résultats:
     résultats_csv.write("\n")
 résultats_csv.close()
 
+# Génere le fichier css, il n'était pas indispensable de le générer mais ainsi le fichier main.py se suffit à lui même
 file_css = open("css/style.css", "w", encoding="utf-8")
 file_css.write("""body{
     background-color: #20252b;
@@ -208,12 +209,13 @@ file_js = open("js/carte.js", "a") #Réouvre carte.js en mode append car nous de
 
 map_list = [] #Liste destinée à accueillir les étiquettes des popups de la carte
 
-#
+#Rempli la liste map_list avec uniquement l'intitulé le la formation et ses coordonnées gps
 count = 0
 for i in liste_résultats:
     multiple = False
     countj = 0
     for j in map_list:
+        #En prévision du cas un lycée propose plusieurs formations
         if liste_résultats[count][16] == map_list[countj][1]:
             map_list[countj][0] += "-" + liste_résultats[count][14]
             multiple = True
@@ -233,6 +235,3 @@ for i in map_list:
     count +=1
 
 file_js.close()
-
-
-
