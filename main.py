@@ -36,7 +36,6 @@ for lycée in prepa_list: #Vérifie ligne par ligne si la formation correspond a
         prepa = prepa_list[count][0:113] 
         liste_résultats.append(prepa)
     count += 1
-print(liste_résultats)
 
 #Créer le fichier résultat.csv contenant les formations répondant à la requête de l'utilisateur
 résultats_csv = open("csv/rendu.csv", "w", encoding="utf-8")
@@ -176,7 +175,7 @@ count = 0
 for i in liste_résultats:
     file_html.write(f"""
     <section>
-        <h2>{liste_résultats[count][3]} - {liste_résultats[count][9]}</h2>
+        <h3>{liste_résultats[count][3]} - {liste_résultats[count][9]}</h3>
         Ville: {liste_résultats[count][8]} Région: {liste_résultats[count][6]} Département: {liste_résultats[count][5]}
     </section>
     """)
@@ -209,23 +208,29 @@ file_js = open("js/carte.js", "a") #Réouvre carte.js en mode append car nous de
 
 map_list = [] #Liste destinée à accueillir les étiquettes des popups de la carte
 
+#
 count = 0
 for i in liste_résultats:
+    multiple = False
     countj = 0
     for j in map_list:
         if liste_résultats[count][16] == map_list[countj][1]:
-            map_list[countj][0] += liste_résultats[count][14]
-        else:
-            map_list.append([liste_résultats[count][12], liste_résultats[count][16]])
+            map_list[countj][0] += "-" + liste_résultats[count][14]
+            multiple = True
         countj += 1
+    if multiple == False:
+        map_list.append([liste_résultats[count][12], liste_résultats[count][16]])
     count += 1
 
 
-file_js.write(f"""
-L.marker([{liste_résultats[count][16]}]).addTo(map)
-.bindPopup("{liste_résultats[count][12]}")
-.openPopup();
-""")
+count = 0
+for i in map_list:
+    file_js.write(f"""
+    L.marker([{map_list[count][1]}]).addTo(map)
+    .bindPopup("{map_list[count][0]}")
+    .openPopup();
+    """)
+    count +=1
 
 file_js.close()
 

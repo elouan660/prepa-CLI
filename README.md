@@ -1,8 +1,17 @@
 # prepa-CLI
 Projet NSI 1G5 Livet Elouan Deschamps
 
-Le But de ce projet est de générer une page web à partir d'un fichier csv, prepas-scientifiques.csv et de demandes utilisateurs.
+Ce projet à pour but de générer un site web renseignant l'utilisateur sur les prépas scientifiques correspondants à ses critères
 
+## Frameworks utilisés:
+* Html
+* Css
+* Python (Abandon de Django)
+* Javacsript:
+    * Leaflet (Cartes interactives)
+    * Chartjs (Graphiques élégants) 
+
+## Documentation
 Dans le code main.py, on peut appercevoir des `list[count][x]` (list: liste quelconque, x: nombre quelconque), voci la table détaillant la signification du `x` 
 x | Description
  --- | --- 
@@ -17,3 +26,7 @@ x | Description
 12 | Nom de l'établissement suivi du nom de la filière
 14 | Nom de la filière sans préciser CPGE
 16 | Coordonnées GPS
+
+## Problèmes rencontrés:
+Avec la carte:
+* [Résolu] Certains lycée proposent plusieurs formations, fatalement les markeurs ses chevauchent et des informations ne sont plus accessibles
