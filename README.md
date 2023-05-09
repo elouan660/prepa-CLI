@@ -9,6 +9,9 @@ x | Description
 1 | Statut de l'établissement (privé ou public)
 3 | Nom de l'établissement
 4 | Numéro de département
+5 | Nom du département
+6 | Nom de la Région
+8 | Nom de l'académie
 9 | Nom de la filière
 12 | Nom de l'établissement suivi du nom de la filière
 14 | Nom de la filière sans préciser CPGE
