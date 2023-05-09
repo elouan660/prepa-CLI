@@ -18,7 +18,7 @@ liste_résultats = [] # Future liste contenant uniquement les formations concern
 count = 0
 for lycée in prepa_list: #Vérifie ligne par ligne si la formation correspond aux critères demandés par l'utilisateur
     if search_lycée in prepa_list[count][3] and search_département in prepa_list[count][4] and search_filière in prepa_list[count][9] :
-        prepa = prepa_list[count][0:17]
+        prepa = prepa_list[count][0:113] 
         liste_résultats.append(prepa)
     count += 1
 print(liste_résultats)
