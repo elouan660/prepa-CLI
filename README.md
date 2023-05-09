@@ -11,7 +11,8 @@ x | Description
 4 | Numéro de département
 5 | Nom du département
 6 | Nom de la Région
-8 | Nom de l'académie
+7 | Nom de l'académie
+8 | Nom de la ville
 9 | Nom de la filière
 12 | Nom de l'établissement suivi du nom de la filière
 14 | Nom de la filière sans préciser CPGE

@@ -6,6 +6,7 @@
         <link rel="stylesheet" href='css/style.css'>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <title>prepas-scientifiques</title>
     </head>
     <body>
@@ -17,19 +18,76 @@
                     <div id = "map"></div>
                     <script src='js/carte.js'></script> <!--Doit être placé après le div d'id map -->
                 </div>
-            
+                <div>
+                <div>
+  <canvas id="myChart"></canvas>
+</div>
+
+<script>
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+      datasets: [{
+        label: '# of Votes',
+        data: [12, 19, 3, 5, 2, 3],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+</script>
+                </div>
                 <div>
                     <h2>Liste</h2>
                     <article class="scroller">
 
     <section>
-        <h2>LGT Saint-Stanislas - CPGE - MPSI</h2>
-        
+        <h2>Lycée Leconte de Lisle - CPGE - MP2I</h2>
+        Ville: Saint-Denis Région: La Réunion Département: La Réunion
     </section>
     
     <section>
-        <h2>Lycée général Clemenceau - CPGE - MPSI</h2>
-        
+        <h2>Lycée Roland Garros - CPGE - PCSI</h2>
+        Ville: Le Tampon Région: La Réunion Département: La Réunion
+    </section>
+    
+    <section>
+        <h2>Lycée Catholique St Charles - CPGE - MPSI</h2>
+        Ville: Saint-Pierre Région: La Réunion Département: La Réunion
+    </section>
+    
+    <section>
+        <h2>Lycée Amiral Pierre Bouvet - CPGE - TSI</h2>
+        Ville: Saint-Benoît Région: La Réunion Département: La Réunion
+    </section>
+    
+    <section>
+        <h2>Lycée Leconte de Lisle - CPGE - MPSI</h2>
+        Ville: Saint-Denis Région: La Réunion Département: La Réunion
+    </section>
+    
+    <section>
+        <h2>Lycée Roland Garros - CPGE - BCPST</h2>
+        Ville: Le Tampon Région: La Réunion Département: La Réunion
+    </section>
+    
+    <section>
+        <h2>Lycée Leconte de Lisle - CPGE - PCSI</h2>
+        Ville: Saint-Denis Région: La Réunion Département: La Réunion
+    </section>
+    
+    <section>
+        <h2>Lycée Lislet Geoffroy - CPGE - PTSI</h2>
+        Ville: Saint-Denis Région: La Réunion Département: La Réunion
     </section>
     
             </div>
