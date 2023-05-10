@@ -20,13 +20,24 @@ for ligne in prepa_csv: #ajoute chaque ligne du csv la la liste
 file_csv.close()
 prepa_list.pop(0) #Car le premier élément du tableau n'est pas un lycée mais une description
 
-print("Bienvenue, vsous pouvez ici rechercher une prépa scientifique, vous voulez rechercher une prépa selon Département Filière Nom, laissez le champ vide si vous ne voulez pas tenir compte de ce critère")
+print("Bienvenue, vous pouvez ici rechercher une prépa scientifique, vous voulez rechercher une prépa selon Département Filière Nom, si vous ne répondez pas à une question les résultats de recherche ne la prendrons pas en compte. Une fois que vous avez répondu à toutes les questions, ouvrez le fichier main.html pour accéder aux résultats de recherche")
 
 #Critères utilisateur
 search_lycée = input("Nom du lycée: ")
 search_département = input("Numéro du département: ")
 search_filière = input("Nom de la filière (ex: MPSI): ")
-search_status = input("Vous souhaitez une formation Publique ou Privée?")
+search_status = input("Vous souhaitez une formation Publique ou Privée?: ")
+search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?")
+if search_bactechno == "":
+    search_bacpro = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers professionels?")
+    if search_bacpro.upper() == "OUI":
+        search_bactpro = 1
+    else:
+        search_bactpro = 0
+elif search_bactechno.upper() == "OUI":
+    search_bactechno = 1
+else:
+    search_bactechno = 0
 
 liste_résultats = [] # Future liste contenant uniquement les formations concernant la requête de l'utilisateur
 count = 0
