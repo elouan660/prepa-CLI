@@ -26,6 +26,7 @@ x | Description
 12 | Nom de l'établissement suivi du nom de la filière
 14 | Nom de la filière sans préciser CPGE
 16 | Coordonnées GPS
+88 | % de bacheliers généraux
 90 | % de bacheliers technologiques
 92 | % de bacheliers professionels
 

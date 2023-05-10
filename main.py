@@ -27,18 +27,22 @@ search_lycée = input("Nom du lycée: ")
 search_département = input("Numéro du département: ")
 search_filière = input("Nom de la filière (ex: MPSI): ")
 search_status = input("Vous souhaitez une formation Publique ou Privée?: ")
-search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?")
-if search_bactechno == "":
-    search_bacpro = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers professionels?")
-    if search_bacpro.upper() == "OUI":
-        search_bactpro = 1
+search_bacg = input("Souhaitez vous voir uniquement des formations qui acceptent les bacheliers généraux?: ")
+search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?: ")
+if search_bacg == "":
+    search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?: ")
+    if search_bactechno == "":
+        search_bacpro = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers professionels?: ")
+        if search_bacpro.upper() == "OUI":
+            search_bactpro = 1
+        else:
+            search_bactpro = 0
+    elif search_bactechno.upper() == "OUI":
+        search_bactechno = 1
     else:
-        search_bactpro = 0
-elif search_bactechno.upper() == "OUI":
-    search_bactechno = 1
-else:
-    search_bactechno = 0
-
+        search_bactechno = 0
+elif search_bacg.upper() == "OUI":
+    search_bacg = 1
 liste_résultats = [] # Future liste contenant uniquement les formations concernant la requête de l'utilisateur
 count = 0
 for lycée in prepa_list: #Vérifie ligne par ligne si la formation correspond aux critères demandés par l'utilisateur
