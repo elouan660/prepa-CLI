@@ -1,7 +1,8 @@
 # prepa-CLI
 Projet NSI 1G5 Livet Elouan Deschamps
 
-Ce projet à pour but de générer un site web renseignant l'utilisateur sur les prépas scientifiques correspondants à ses critères
+Ce projet à pour but de générer un site web renseignant l'utilisateur sur les prépas scientifiques correspondants à ses critères.
+Seul le fichier main.py et une connection internet (pas besoin d'un débit gargantuesque) sont néscéssaires pour le bon usage du programme.
 
 ## Frameworks utilisés:
 * Html

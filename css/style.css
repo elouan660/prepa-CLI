@@ -18,9 +18,9 @@ li{
 }
 
 .grid{
-    display: grid;
-    width: 90%;
-    grid-template-columns: 50% 50%;
+    /*display: grid;*/
+    /*width: 90%;*/
+    /*grid-template-columns: 100%;*/
     /*align-items: start;*/
     justify-content: space-between;
     margin: 10px;
@@ -55,10 +55,22 @@ input, button{
     border-bottom: solid;
 }
 #map{
-    height: 300px; 
-    width: 400px;
+    height: 600px; 
+    width: 450px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 15px;
     border: solid;
 }
+@media screen and (min-width: 700px) {
+    body{
+        background-color: aqua;
+    }
+    #map{
+        height: 300px;
+        width: 400px;
+    }
+    #footer{
+        font-size: small;
+    }
+  }

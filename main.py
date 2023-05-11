@@ -2,12 +2,15 @@ import csv #importe la bibliothèque csv
 import requests as req
 import os as os
 
+#Crétation de dossiers qui contiendrons des fichier de formats éponymes
 if os.path.isdir("css") == False:
     os.mkdir("css")
 if os.path.isdir("csv") == False:
     os.mkdir("csv")
 if os.path.isdir("js") == False:
     os.mkdir("js")
+
+#Télécharger le fichier csv exploité
 if os.path.isfile('csv/prepa-scientifiques.csv') == False:
     fichier = req.get('https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-parcoursup/exports/csv?lang=fr&refine=fili%3A%22CPGE%22&refine=form_lib_voe_acc%3A%22Classe%20pr%C3%A9paratoire%20scientifique%22&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B', allow_redirects=True)
     open('csv/prepa-scientifiques.csv', "wb").write(fichier.content)
@@ -26,28 +29,37 @@ print("Bienvenue, vous pouvez ici rechercher une prépa scientifique, vous voule
 search_lycée = input("Nom du lycée: ")
 search_département = input("Numéro du département: ")
 search_filière = input("Nom de la filière (ex: MPSI): ")
-search_status = input("Vous souhaitez une formation Publique ou Privée?: ")
+search_status = input("Vous souhaitez des formations se déroulants dans des lycées: Public ou Privé: ")
 search_bacg = input("Souhaitez vous voir uniquement des formations qui acceptent les bacheliers généraux?: ")
-search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?: ")
 if search_bacg == "":
+    search_bacg = 0.0
     search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?: ")
     if search_bactechno == "":
+        search_bactechno = 0.0
         search_bacpro = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers professionels?: ")
         if search_bacpro.upper() == "OUI":
-            search_bactpro = 1
+            search_bactpro = 1.0
         else:
-            search_bactpro = 0
+            search_bactpro = 0.0
     elif search_bactechno.upper() == "OUI":
-        search_bactechno = 1
+        search_bacg = 0.0
+        search_bacpro = 0.0
+        search_bactechno = 1.0
     else:
-        search_bactechno = 0
+        search_bactechno = 0.0
 elif search_bacg.upper() == "OUI":
-    search_bacg = 1
+    search_bacpro = 0.0
+    search_bactechno = 0.0
+    search_bacg = 1.0
+else:
+    search_bacg = 0.0
+
+#Traiter les reponses utilisateur
 liste_résultats = [] # Future liste contenant uniquement les formations concernant la requête de l'utilisateur
 count = 0
 for lycée in prepa_list: #Vérifie ligne par ligne si la formation correspond aux critères demandés par l'utilisateur
     #Ajout de .upper() afin de rendre le champ insensible à la casse
-    if search_lycée.upper() in prepa_list[count][3].upper() and search_département in prepa_list[count][4] and search_filière.upper() in prepa_list[count][9].upper() and search_status.upper() in prepa_list[count][1].upper():
+    if search_lycée.upper() in prepa_list[count][3].upper() and search_département in prepa_list[count][4] and search_filière.upper() in prepa_list[count][9].upper() and search_status.upper() in prepa_list[count][1].upper() and prepa_list[count][1].upper() and float(prepa_list[count][88]) >= search_bacg and float(prepa_list[count][90]) >= search_bactechno and float(prepa_list[count][92]) >= search_bactpro:
         prepa = prepa_list[count][0:113] 
         liste_résultats.append(prepa)
     count += 1
@@ -84,7 +96,7 @@ li{
 .grid{
     display: grid;
     width: 90%;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 100%;
     /*align-items: start;*/
     justify-content: space-between;
     margin: 10px;
@@ -138,9 +150,7 @@ file_html.write("""
         <meta charset="utf-8">
         <link rel="stylesheet" href='css/style.css'>
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="crossorigin=""/>
-        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <title>prepas-scientifiques</title>
+        <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>        <title>prepas-scientifiques</title>
     </head>
     <body>
         <div class="container">
@@ -150,34 +160,6 @@ file_html.write("""
                     <h2>Carte</h2>
                     <div id = "map"></div>
                     <script src='js/carte.js'></script> <!--Doit être placé après le div d'id map -->
-                </div>
-                <div>
-                <div>
-  <canvas id="myChart"></canvas>
-</div>
-
-<script>
-  const ctx = document.getElementById('myChart');
-
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-      datasets: [{
-        label: '# of Votes',
-        data: [12, 19, 3, 5, 2, 3],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
-  });
-</script>
                 </div>
                 <div>
                     <h2>Liste</h2>
@@ -192,7 +174,8 @@ for i in liste_résultats:
     file_html.write(f"""
     <section>
         <h3>{liste_résultats[count][3]} - {liste_résultats[count][9]}</h3>
-        Ville: {liste_résultats[count][8]} Région: {liste_résultats[count][6]} Département: {liste_résultats[count][5]}
+        Ville: {liste_résultats[count][8]} - Région: {liste_résultats[count][6]} - Département: {liste_résultats[count][5]} <br>
+        Status: {liste_résultats[count][1]} - %BacGénéral {liste_résultats[count][88]} - %BacTech {liste_résultats[count][90]} - %BacPro {liste_résultats[count][92]}
     </section>
     """)
     count += 1
@@ -201,6 +184,7 @@ for i in liste_résultats:
 file_html.write("""
             </div>
             </div>
+            <div id="footer">
             Copyright © Elouan Deschamps<br>
             Le code source de ce site est publié sous licence 
             <a href="https://www.gnu.org/licenses/agpl-3.0.fr.html">
@@ -208,6 +192,7 @@ file_html.write("""
               <img src="https://www.gnu.org/graphics/agplv3-88x31.png" alt="agplv3"> <br>
             </a>
             il est diponible sur <a href="https://github.com/elouan660/prepa-CLI/">Github</a>
+            </div>
 """)
 file_html.close()
 
