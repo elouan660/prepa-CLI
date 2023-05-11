@@ -62,7 +62,7 @@ input, button{
     border-radius: 15px;
     border: solid;
 }
-@media screen and (min-width: 700px) {
+@media screen and (max-width: 700px) {
     body{
         background-color: aqua;
     }
