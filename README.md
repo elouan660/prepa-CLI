@@ -7,7 +7,7 @@ Seul le fichier main.py et une connection internet (pas besoin d'un débit garga
 ## Frameworks utilisés:
 * Html
 * Css
-* Python (Abandon de Django)
+* Python (version 3.10.6)
 * Javacsript:
     * Leaflet (Cartes interactives)
     * Chartjs (Graphiques élégants) 

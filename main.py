@@ -31,35 +31,31 @@ search_département = input("Numéro du département: ")
 search_filière = input("Nom de la filière (ex: MPSI): ")
 search_status = input("Vous souhaitez des formations se déroulants dans des lycées: Public ou Privé: ")
 search_bacg = input("Souhaitez vous voir uniquement des formations qui acceptent les bacheliers généraux?: ")
-if search_bacg == "":
-    search_bacg = 0.0
-    search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?: ")
-    if search_bactechno == "":
-        search_bactechno = 0.0
-        search_bacpro = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers professionels?: ")
-        if search_bacpro.upper() == "OUI":
-            search_bactpro = 1.0
-        else:
-            search_bactpro = 0.0
-    elif search_bactechno.upper() == "OUI":
-        search_bacg = 0.0
-        search_bacpro = 0.0
-        search_bactechno = 1.0
-    else:
-        search_bactechno = 0.0
-elif search_bacg.upper() == "OUI":
+if search_bacg.upper() == "OUI":
     search_bacpro = 0.0
     search_bactechno = 0.0
     search_bacg = 1.0
 else:
     search_bacg = 0.0
+    search_bactechno = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers technologiques?: ")  
+    if search_bactechno.upper() == "OUI":
+        search_bacpro = 0.0
+        search_bactechno = 1.0
+    else:
+        search_bactechno = 0.0
+        search_bacpro = input("Souhaitez-vous voir uniquement des formations qui acceptent les bacheliers professionels?: ")
+        if search_bacpro.upper() == "OUI":
+            search_bacpro = 1.0
+        else:
+            search_bacpro = 0.0
+
 
 #Traiter les reponses utilisateur
 liste_résultats = [] # Future liste contenant uniquement les formations concernant la requête de l'utilisateur
 count = 0
 for lycée in prepa_list: #Vérifie ligne par ligne si la formation correspond aux critères demandés par l'utilisateur
     #Ajout de .upper() afin de rendre le champ insensible à la casse
-    if search_lycée.upper() in prepa_list[count][3].upper() and search_département in prepa_list[count][4] and search_filière.upper() in prepa_list[count][9].upper() and search_status.upper() in prepa_list[count][1].upper() and prepa_list[count][1].upper() and float(prepa_list[count][88]) >= search_bacg and float(prepa_list[count][90]) >= search_bactechno and float(prepa_list[count][92]) >= search_bactpro:
+    if search_lycée.upper() in prepa_list[count][3].upper() and search_département in prepa_list[count][4] and search_filière.upper() in prepa_list[count][9].upper() and search_status.upper() in prepa_list[count][1].upper() and prepa_list[count][1].upper() and float(prepa_list[count][88]) >= search_bacg and float(prepa_list[count][90]) >= search_bactechno and float(prepa_list[count][92]) >= search_bacpro:
         prepa = prepa_list[count][0:113] 
         liste_résultats.append(prepa)
     count += 1
@@ -94,9 +90,9 @@ li{
 }
 
 .grid{
-    display: grid;
+    /*display: grid;*/
     width: 90%;
-    grid-template-columns: 100%;
+    /*grid-template-columns: 100%;*/
     /*align-items: start;*/
     justify-content: space-between;
     margin: 10px;
@@ -131,13 +127,23 @@ input, button{
     border-bottom: solid;
 }
 #map{
-    height: 300px; 
-    width: 400px;
+    height: 450px; 
+    width: 600px;
     margin-left: auto;
     margin-right: auto;
     border-radius: 15px;
     border: solid;
 }
+/*
+@media only screen and (max-device-width: 480px) {
+    body{
+        background-color: aqua;
+    }
+    #footer{
+        font-size: small;
+    }
+  }
+*/
 """)
 file_css.close()
 
@@ -179,6 +185,8 @@ for i in liste_résultats:
     </section>
     """)
     count += 1
+if len(liste_résultats) == 0:
+    file_html.write("Aucun Résultat")
 
 #Ajoute le footer à main.html
 file_html.write("""
