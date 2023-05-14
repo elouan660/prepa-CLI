@@ -93,12 +93,13 @@ li{
     margin-bottom: 10px;
 }
 
+/*Cette classe se nomme grid car à l'origine le contenu davit être stocké dans une grille.
 .grid{
     /*display: grid;*/
     width: 90%;
     /*grid-template-columns: 100%;*/
     /*align-items: start;*/
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     margin: 10px;
     margin-right: 5%;
     margin-left: 5%;
