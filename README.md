@@ -45,6 +45,8 @@ x | Description
 ## Problèmes rencontrés:
 Avec la carte:
 * [Résolu] Certains lycée proposent plusieurs formations, fatalement les marqueurs ses chevauchent et des informations ne sont plus accessibles
-
-* 
-
+Avec le fichier csv:
+* Certaines prépas sont hors cadres et ont un intitulé différent des fillières traditionelles.
+* Certaines filières traditionnelles incluent des précisions dans le nom de la fillière
+* Certaines cases parfois sont vides, parfois sans raison apparente
+* Beaucoup de données inutiles sont incluses dans le csv
