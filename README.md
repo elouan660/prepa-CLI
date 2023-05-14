@@ -1,8 +1,8 @@
 # prepa-CLI
 Projet NSI 1G5 Livet Elouan Deschamps
 
-Ce projet à pour but de générer un site web renseignant l'utilisateur sur les prépas scientifiques correspondants à ses critères.
-Seul le fichier main.py et une connection internet (pas besoin d'un débit gargantuesque) sont néscéssaires pour le bon usage du programme.
+Ce projet à pour but de générer une page web renseignant l'utilisateur sur les prépas scientifiques correspondants à ses critères.
+Une version réçente de python (python 3.9+) ainsi qu'une connection internet sont nécéssaires au fonctionnement du programme
 
 ## Frameworks utilisés:
 * Html
@@ -10,10 +10,12 @@ Seul le fichier main.py et une connection internet (pas besoin d'un débit garga
 * Python (version 3.10.6)
 * Javacsript:
     * Leaflet (Cartes interactives)
-    * Chartjs (Graphiques élégants) 
 
-## Documentation
-Dans le code main.py, on peut appercevoir des `list[count][x]` (list: liste quelconque, x: nombre quelconque), voci la table détaillant la signification du `x` 
+## Documentation utilisateur
+Pour utiliser le programme, téléchargez le fichier `main.py` puis rendez-vous dans le répertoire contenant le fichier avec la commande `cd`, il est recommandé de déplacer le fichier dans un répertoire vide car celui-ci va être ammené à créer d'autres fichiers et repertoires. Vous pouvez ensuite le lancer avec la commande `python3 main.py` sur tout les sytèmes d'exploitation à l'exception de windows ou il faudra entrer `python main.py`
+
+## Documentation développeur
+Dans le code main.py, on peut appercevoir des `list[count][x]` (list: liste quelconque, x: nombre quelconque), voici la table détaillant la signification du `x` 
 x | Description
  --- | --- 
 1 | Statut de l'établissement (privé ou public)

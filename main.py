@@ -21,9 +21,10 @@ prepa_list = [] #Liste qui contiendra toute les données du csv
 for ligne in prepa_csv: #ajoute chaque ligne du csv la la liste
     prepa_list.append(ligne)
 file_csv.close()
+details = prepa_list[0] #stocke la description (header) des données du csv
 prepa_list.pop(0) #Car le premier élément du tableau n'est pas un lycée mais une description
 
-print("Bienvenue, vous pouvez ici rechercher une prépa scientifique, vous voulez rechercher une prépa selon Département Filière Nom, si vous ne répondez pas à une question les résultats de recherche ne la prendrons pas en compte. Une fois que vous avez répondu à toutes les questions, ouvrez le fichier main.html pour accéder aux résultats de recherche")
+print("Bienvenue, vous pouvez ici rechercher une prépa scientifique selon les critères de votre choix, si vous ne répondez pas à une question les résultats de recherche ne la prendrons pas en compte. Une fois que vous avez répondu à toutes les questions, ouvrez le fichier main.html pour accéder aux résultats de recherche")
 
 #Critères utilisateur
 search_lycée = input("Nom du lycée: ")
@@ -62,6 +63,9 @@ for lycée in prepa_list: #Vérifie ligne par ligne si la formation correspond a
 
 #Créer le fichier résultat.csv contenant les formations répondant à la requête de l'utilisateur
 résultats_csv = open("csv/rendu.csv", "w", encoding="utf-8")
+for i in details:
+    résultats_csv.write(f"{i};")
+résultats_csv.write("\n")
 for i in liste_résultats:
     for j in i:
         résultats_csv.write(f"{j};")
@@ -149,8 +153,7 @@ file_css.close()
 
 #Ouvre ou créé le fichier 'main.html', qui contient le rendu graphique final
 file_html = open("main.html", "w", encoding="utf-8")
-file_html.write("""
-<!DOCTYPE html>
+file_html.write("""<!DOCTYPE html>
 <html>
     <head>
         <meta charset="utf-8">
@@ -161,7 +164,7 @@ file_html.write("""
     <body>
         <div class="container">
             <div class="grid">
-            
+                <div><h1> Résultats de recherche prépas-scientifiques </h1>
                 <div>
                     <h2>Carte</h2>
                     <div id = "map"></div>
@@ -224,7 +227,7 @@ map_list = [] #Liste destinée à accueillir les étiquettes des popups de la ca
 #Rempli la liste map_list avec uniquement l'intitulé le la formation et ses coordonnées gps
 count = 0
 for i in liste_résultats:
-    multiple = False
+    multiple = False #Permet de savoir si il un lycée propose plusieurs CPGE
     countj = 0
     for j in map_list:
         #En prévision du cas un lycée propose plusieurs formations
@@ -233,7 +236,7 @@ for i in liste_résultats:
             multiple = True
         countj += 1
     if multiple == False:
-        map_list.append([liste_résultats[count][12], liste_résultats[count][16], liste_résultats[count][111]])
+        map_list.append([liste_résultats[count][12], liste_résultats[count][16]])
     count += 1
 
 
@@ -241,9 +244,12 @@ count = 0
 for i in map_list:
     file_js.write(f"""
     L.marker([{map_list[count][1]}]).addTo(map)
-    .bindPopup("{map_list[count][0]} <a href {map_list[count][2]}>en savoir plus</a>")
+    .bindPopup("{map_list[count][0]}")
     .openPopup();
     """)
     count +=1
 
 file_js.close()
+
+print(f"\nPage de résultats générée disponible à {os.getcwd()}/main.html")
+print(f"Donnée complètes concernant les résultats disponible à {os.getcwd()}/csv/rendu.csv")
