@@ -30,7 +30,8 @@ x | Description
 88 | % de bacheliers généraux
 90 | % de bacheliers technologiques
 92 | % de bacheliers professionels
-
+111 | Fiche formation parcoursup
+112 | Taux d'accès
 ## Problèmes rencontrés:
 Avec la carte:
 * [Résolu] Certains lycée proposent plusieurs formations, fatalement les markeurs ses chevauchent et des informations ne sont plus accessibles

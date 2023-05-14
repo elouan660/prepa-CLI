@@ -111,8 +111,8 @@ input, button{
     border-radius: 5px;
 }
 .scroller {
-    height: 600px;
-    width: 400px;
+    height: 800px;
+    width: 600px;
     margin: auto;
     overflow-y: scroll;
     overflow-x: hidden;
@@ -178,29 +178,33 @@ file_html = open("main.html", "a", encoding="utf-8") # Réouvre main.html en mod
 count = 0
 for i in liste_résultats:
     file_html.write(f"""
-    <section>
-        <h3>{liste_résultats[count][3]} - {liste_résultats[count][9]}</h3>
-        Ville: {liste_résultats[count][8]} - Région: {liste_résultats[count][6]} - Département: {liste_résultats[count][5]} <br>
-        Status: {liste_résultats[count][1]} - %BacGénéral {liste_résultats[count][88]} - %BacTech {liste_résultats[count][90]} - %BacPro {liste_résultats[count][92]}
-    </section>
-    """)
+                    <section>
+                        <h3>{liste_résultats[count][3]} - {liste_résultats[count][9]}</h3>
+                        Ville: {liste_résultats[count][8]} - Région: {liste_résultats[count][6]} - Département: {liste_résultats[count][5]} <br>
+                        Status: {liste_résultats[count][1]} - %BacGénéral {liste_résultats[count][88]} - %BacTech {liste_résultats[count][90]} - %BacPro {liste_résultats[count][92]}
+                        - Taux d'accès: {liste_résultats[count][112]}% <br>
+                        Fiche parcoursup: <a href="{liste_résultats[count][111]}">lien</a>
+                    </section>
+""")
     count += 1
 if len(liste_résultats) == 0:
     file_html.write("Aucun Résultat")
 
 #Ajoute le footer à main.html
 file_html.write("""
-            </div>
-            </div>
-            <div id="footer">
-            Copyright © Elouan Deschamps<br>
-            Le code source de ce site est publié sous licence 
-            <a href="https://www.gnu.org/licenses/agpl-3.0.fr.html">
-              GNU Affero General Public Licence version 3.0 <br>
-              <img src="https://www.gnu.org/graphics/agplv3-88x31.png" alt="agplv3"> <br>
-            </a>
-            il est diponible sur <a href="https://github.com/elouan660/prepa-CLI/">Github</a>
-            </div>
+                </div>
+        </div>
+        <div id="footer">
+        Copyright © Elouan Deschamps<br>
+        Le code source de ce site est publié sous licence 
+        <a href="https://www.gnu.org/licenses/agpl-3.0.fr.html">
+        GNU Affero General Public Licence version 3.0 <br>
+        <img src="https://www.gnu.org/graphics/agplv3-88x31.png" alt="agplv3"> <br>
+        </a>
+        il est diponible sur <a href="https://github.com/elouan660/prepa-CLI/">Github</a>
+        </div>
+    </body>
+</html>
 """)
 file_html.close()
 
@@ -225,11 +229,11 @@ for i in liste_résultats:
     for j in map_list:
         #En prévision du cas un lycée propose plusieurs formations
         if liste_résultats[count][16] == map_list[countj][1]:
-            map_list[countj][0] += "-" + liste_résultats[count][14]
+            map_list[countj][0] += " - " + liste_résultats[count][14]
             multiple = True
         countj += 1
     if multiple == False:
-        map_list.append([liste_résultats[count][12], liste_résultats[count][16]])
+        map_list.append([liste_résultats[count][12], liste_résultats[count][16], liste_résultats[count][111]])
     count += 1
 
 
@@ -237,7 +241,7 @@ count = 0
 for i in map_list:
     file_js.write(f"""
     L.marker([{map_list[count][1]}]).addTo(map)
-    .bindPopup("{map_list[count][0]}")
+    .bindPopup("{map_list[count][0]} <a href {map_list[count][2]}>en savoir plus</a>")
     .openPopup();
     """)
     count +=1
