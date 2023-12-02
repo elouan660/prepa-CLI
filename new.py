@@ -1,10 +1,7 @@
 import csv #Manipuler des fichier csv
 import requests as req #Récupérer des fichiers en ligne
 import os as os #Interagir avec le système hôte
-if os.name == 'nt': #Si le système hôte est windows
-    import mysql.connector as sqlco #Utiliser mysql
-else: #Si le système hôte est unix
-    import mariadb as sqlco #Utiliser mariadb
+import mysql.connector as sqlco #Utiliser mysql
 import tkinter as tk #Créer une interface graphique
 
 #Créer des dossiers
@@ -87,9 +84,6 @@ dbcursor.execute("""create table if not exists formations (
     taux_acces float,
     lien_parcoursup varchar(100)
 );""")
-
-
-
 
 prepa_db.close()
 
