@@ -43,34 +43,35 @@ dbcursor.execute("create database if not exists prepa_db") #créer la base donn�
 dbcursor.execute("use prepa_db") #La sélectionner, on n'utilisera qu'exclusivement cette db
 
 #Créer les tables (vides) de la base de donnée
+#Il est néscéssaire de préciser la primary key pour éviter qu'un enregistrement ne puisse apparaitre en double
 def create_tables(ucursor): #uscursor pour "used cursor"
     #créer la table régions listant les régions de france
     ucursor.execute("""
     create table if not exists regions (
-        id_region int,
+        id_region int primary key,
         nom_region varchar(50)
     );""")
     #créer la table départements listant les départements de france en leur assignant une région
     ucursor.execute("""
     create table if not exists departements (
-        id_departement int,
+        id_departement int primary key,
         nom_departement varchar(50),
         id_region varchar(50)
     );""")
     #Table des villes
     ucursor.execute("""create table if not exists villes (
-        id_ville int,
+        id_ville int primary key,
         nom_ville varchar(50),
         id_departement int
     );""")
     #Tables des status des lycées (privé ou public)
     ucursor.execute("""create table if not exists status (
-        id_statut int,
+        id_statut int primary key,
         nom_statut varchar(50)
     );""")
     #Table des lycées
     ucursor.execute("""create table if not exists lycees (
-        uai_lycee varchar(9),
+        uai_lycee varchar(9) primary key,
         nom_lycee varchar(50),
         id_ville int,
         id_statut int,
@@ -83,6 +84,7 @@ def create_tables(ucursor): #uscursor pour "used cursor"
     );""")
     #Table des formations
     ucursor.execute("""create table if not exists formations (
+        id_formation int primary key not null auto_increment,
         uai_lycee varchar(9),
         id_filliere int,
         pc_generale float,
@@ -92,12 +94,11 @@ def create_tables(ucursor): #uscursor pour "used cursor"
         lien_parcoursup varchar(100)
     );""")
 create_tables(dbcursor)
+#Créer les enregistrements de la table regions
 for region in regions_array[1:]: #Pour ne pas inclure la première ligne
-    requête = f"""
-    insert into regions (id_region, nom_region) values ({region[0]}, "{region[1]}") select * from (select {region[0]} as id_region) as temp where not exists(select id_region from regions where id_region = {region[0]});
-    """
-
+    requête = f'insert ignore into regions (id_region, nom_region) values ({region[0]}, "{region[1]}")' #insert ignore pour ne rien faire si l'enregistrement existe déjà
     dbcursor.execute(requête)
+#Créer les enregistrements de la table departements
 for département in departements_array[1:]:
     corrected_id = département[0] 
     try:
@@ -107,9 +108,8 @@ for département in departements_array[1:]:
             corrected_id = '9001' #Corse du sud
         else:
             corrected_id = '9002' #haute Corse
-    dbcursor.execute(f'insert into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
-for ligne in prepa_array[1:]:
-    dbcursor.execute("insert into ")
+    dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
+
 
 
 prepa_db.commit() #Pour valider l'insertion des valeurs
