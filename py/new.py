@@ -18,15 +18,13 @@ def create_csv(chemin, array, delimiteur, lien):
     db_csv = csv.reader(filecsv,delimiter=delimiteur)
     for ligne in db_csv:
         array.append(ligne)
+
 prepa_array = []
 create_csv('prepa-CLI/csv/prepa-scientifiques.csv',prepa_array,";",'https://data.enseignementsup-recherche.gouv.fr/api/explore/v2.1/catalog/datasets/fr-esr-parcoursup/exports/csv?lang=fr&refine=fili%3A%22CPGE%22&refine=form_lib_voe_acc%3A%22Classe%20pr%C3%A9paratoire%20scientifique%22&timezone=Europe%2FBerlin&use_labels=true&delimiter=%3B' )
-if os.path.isfile('prepa-CLI/csv/regions.csv') == False:
-    region_get = req.get('https://www.data.gouv.fr/fr/datasets/r/34fc7b52-ef11-4ab0-bc16-e1aae5c942e7', allow_redirects=True)
-    open('prepa-CLI/csv/regions.csv', 'wb').write(region_get.content)
-    
-if os.path.isfile('prepa-CLI/csv/departements.csv') == False:
-    departements_get = req.get('https://www.data.gouv.fr/fr/datasets/r/70cef74f-70b1-495a-8500-c089229c0254', allow_redirects=True)
-    open('prepa-CLI/csv/departements.csv', 'wb').write(departements_get.content)
+regions_array = []
+create_csv('prepa-CLI/csv/regions.csv', regions_array,",","https://www.data.gouv.fr/fr/datasets/r/34fc7b52-ef11-4ab0-bc16-e1aae5c942e7" )
+departements_array = []
+create_csv('prepa-CLI/csv/departements.csv', departements_array, ",",'https://www.data.gouv.fr/fr/datasets/r/70cef74f-70b1-495a-8500-c089229c0254' )
 
 
 try: #Se connecter au serveur sql
@@ -80,7 +78,7 @@ def create_tables(ucursor): #uscursor pour "used cursor"
     );""")
     #Table des fillières (MPSI, MP2I, etc)
     ucursor.execute("""create table if not exists fillieres (
-        id_filliere int not null auto_increment,
+        id_filliere int primary key not null auto_increment,
         nom_filliere varchar(50)
     );""")
     #Table des formations
@@ -94,8 +92,21 @@ def create_tables(ucursor): #uscursor pour "used cursor"
         lien_parcoursup varchar(100)
     );""")
 create_tables(dbcursor)
+for region in regions_array[1:]: #Pour ne pas inclure la première ligne
+    requête = f'insert into regions (id_region, nom_region) values ({region[0]}, "{region[1]}");'
+    dbcursor.execute(requête)
+for département in departements_array[1:]:
+    corrected_id = département[0] 
+    try:
+        int(corrected_id) #Si l'id peut est un nombre
+    except ValueError: #cas particulier des départements corses
+        if département[0][1] == 'A':
+            corrected_id = '9001' #Corse du sud
+        else:
+            corrected_id = '9002' #haute Corse
+    dbcursor.execute(f'insert into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
 
-
+prepa_db.commit() #Pour valider l'insertion des valeurs
 prepa_db.close()
 
 
