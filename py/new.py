@@ -93,7 +93,10 @@ def create_tables(ucursor): #uscursor pour "used cursor"
     );""")
 create_tables(dbcursor)
 for region in regions_array[1:]: #Pour ne pas inclure la première ligne
-    requête = f'insert into regions (id_region, nom_region) values ({region[0]}, "{region[1]}");'
+    requête = f"""
+    insert into regions (id_region, nom_region) values ({region[0]}, "{region[1]}") select * from (select {region[0]} as id_region) as temp where not exists(select id_region from regions where id_region = {region[0]});
+    """
+
     dbcursor.execute(requête)
 for département in departements_array[1:]:
     corrected_id = département[0] 
@@ -105,8 +108,9 @@ for département in departements_array[1:]:
         else:
             corrected_id = '9002' #haute Corse
     dbcursor.execute(f'insert into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
+for ligne in prepa_array[1:]:
+    dbcursor.execute("insert into ")
+
 
 prepa_db.commit() #Pour valider l'insertion des valeurs
 prepa_db.close()
-
-
