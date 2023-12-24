@@ -1,21 +1,22 @@
 import csv #Manipuler des fichier csv
 import requests as req #Récupérer des fichiers en ligne
-import os as os #Interagir avec le système hôte
+import os #Interagir avec le système hôte
+import sys
 import mysql.connector as sqlco #Utiliser mysql/mariadb
-import tkinter as tk #Créer une interface graphique
+from frontend import *
 
 #Créer des dossiers
 if os.path.isdir("prepa-CLI/sql") == False:
     os.mkdir("prepa-CLI/sql")
 if os.path.isdir("prepa-CLI/csv") == False:
     os.mkdir("prepa-CLI/csv")
-
+ 
 def create_csv(chemin, array, delimiteur, lien):
     if os.path.isfile(chemin) == False:
         get = req.get(lien, allow_redirects=True)
         open(chemin, "wb").write(get.content)
     filecsv = open(chemin, "r", encoding="utf-8")
-    db_csv = csv.reader(filecsv,delimiter=delimiteur)
+    db_csv = csv.reader(filecsv, delimiter=delimiteur)
     for ligne in db_csv:
         array.append(ligne)
 
@@ -93,7 +94,12 @@ def create_tables(ucursor): #uscursor pour "used cursor"
         taux_acces float,
         lien_parcoursup varchar(100)
     );""")
-create_tables(dbcursor)
+try:
+    create_tables(dbcursor)
+    print("Tables crées sans erreur")
+except sqlco.Error as error:
+    print(f"ERREUR: {error}")
+
 #Créer les enregistrements de la table regions
 for region in regions_array[1:]: #Pour ne pas inclure la première ligne
     requête = f'insert ignore into regions (id_region, nom_region) values ({region[0]}, "{region[1]}")' #insert ignore pour ne rien faire si l'enregistrement existe déjà
@@ -102,15 +108,13 @@ for region in regions_array[1:]: #Pour ne pas inclure la première ligne
 for département in departements_array[1:]:
     corrected_id = département[0] 
     try:
-        int(corrected_id) #Si l'id peut est un nombre
+        int(corrected_id) #Si l'id peut est un nombre entier
     except ValueError: #cas particulier des départements corses
         if département[0][1] == 'A':
             corrected_id = '9001' #Corse du sud
         else:
             corrected_id = '9002' #haute Corse
     dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
-
-
 
 prepa_db.commit() #Pour valider l'insertion des valeurs
 prepa_db.close()
