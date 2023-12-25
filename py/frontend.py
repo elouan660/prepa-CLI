@@ -4,18 +4,19 @@ from PySide6.QtCore import Qt
 class OurWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Test")
+        self.setWindowTitle("Test") #Titre de la fenêtre
         button = QPushButton("Hi!")
-        self.widget = QWidget()
+        self.widget = QWidget() #Widget qui sera le contenu de la scrollarea
         self.area = QVBoxLayout() #Widgets Verticaux
-        self.widget.setLayout(self.area)
-        self.area.addWidget(button)
-        self.scroller = QScrollArea()
-        button.clicked.connect(self.onClick)
+        self.widget.setLayout(self.area) #Mettre self.area dans widget
+        self.area.addWidget(button) #Mettre le bouton dans self.area
+        self.scroller = QScrollArea() #Créer une zone de scroll
+        self.scroller.setWidgetResizable(True) #La rendre redimmensionable (sinon un bug se produit lorsqu'on ajoute un widget)
+        button.clicked.connect(self.onClick) #Lancer self.onClick lorsque le bouton est cliqué
     def onClick(self):
         print("Bouton Cliqué")
         self.area.addWidget(QLabel("Test"))
-        self.refresh()
+        #self.refresh()
     def addentries(self, tab):
         for i in tab:
             self.area.addWidget(QLabel(i))

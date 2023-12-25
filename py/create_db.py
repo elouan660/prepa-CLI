@@ -61,13 +61,13 @@ def create_tables(ucursor): #uscursor pour "used cursor"
     );""")
     #Table des villes
     ucursor.execute("""create table if not exists villes (
-        id_ville int primary key,
+        id_ville int primary key not null auto_increment,
         nom_ville varchar(50),
         id_departement int
     );""")
     #Tables des status des lycées (privé ou public)
     ucursor.execute("""create table if not exists status (
-        id_statut int primary key,
+        id_statut int primary key not null auto_increment,
         nom_statut varchar(50)
     );""")
     #Table des lycées
@@ -115,6 +115,21 @@ for département in departements_array[1:]:
         else:
             corrected_id = '9002' #haute Corse
     dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
+
+#Créer les enregistrements des status, des villes, des lycées, des fillières et enfin des Formations
+for formation in prepa_array[1:]:
+    #Usage du mot clef "dual"
+    corrected_id = formation[4] 
+    try:
+        int(corrected_id) #Si l'id peut est un nombre entier
+    except ValueError: #cas particulier des départements corses
+        if formation[4][1] == 'A':
+            corrected_id = '9001' #Corse du sud
+        else:
+            corrected_id = '9002' #haute Corse
+    dbcursor.execute(f'insert into status (nom_statut) select "{formation[1]}" from dual where not exists (select * from status where nom_statut = "{formation[1]}");')
+    dbcursor.execute(f'insert into villes (nom_ville, id_departement) select "{formation[8]}", {corrected_id} from dual where not exists (select * from villes where nom_ville = "{formation[8]}");')
+
 
 prepa_db.commit() #Pour valider l'insertion des valeurs
 prepa_db.close()
