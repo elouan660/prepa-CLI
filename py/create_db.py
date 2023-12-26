@@ -94,49 +94,56 @@ def create_tables(ucursor): #uscursor pour "used cursor"
         taux_acces float,
         lien_parcoursup varchar(150)
     );""")
-try:
-    create_tables(dbcursor)
-    print("Tables crées sans erreur")
-except sqlco.Error as error:
-    print(f"ERREUR: {error}")
 
-#Créer les enregistrements de la table regions
-for region in regions_array[1:]: #Pour ne pas inclure la première ligne
-    requête = f'insert ignore into regions (id_region, nom_region) values ({region[0]}, "{region[1]}")' #insert ignore pour ne rien faire si l'enregistrement existe déjà
-    dbcursor.execute(requête)
-#Créer les enregistrements de la table departements
-for département in departements_array[1:]:
-    corrected_dep = département[0] 
+def ext_create_tables():
     try:
-        int(corrected_dep) #Si l'id peut est un nombre entier
-    except ValueError: #cas particulier des départements corses
-        if département[0][1] == 'A':
-            corrected_dep = '9001' #Corse du sud
-        else:
-            corrected_dep = '9002' #haute Corse
-    dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_dep}, "{département[1]}", {département[2]}) ')
-#Créer les enregistrements des status, des villes, des lycées, des fillières et enfin des Formations
-for formation in prepa_array[1:]:
-    corrected_dep = formation[4] 
-    try:
-        int(corrected_dep) #Si l'id peut est un nombre entier
-    except ValueError: #cas particulier des départements corses
-        if formation[4][1] == 'A':
-            corrected_dep = '9001' #Corse du sud
-        else:
-            corrected_dep = '9002' #haute Corse
-    dbcursor.execute(f'insert into status (nom_statut) select "{formation[1]}" from dual where not exists (select * from status where nom_statut = "{formation[1]}");')
-    dbcursor.execute(f'select id_statut from status where nom_statut = "{formation[1]}"') #Retrouver l'id (automatiquement attribuée) du statut
-    current_statut = dbcursor.fetchall()[0][0] #id du statut courant
-    dbcursor.execute(f'insert into villes (nom_ville, id_departement) select "{formation[8]}", {corrected_dep} from dual where not exists (select * from villes where nom_ville = "{formation[8]}");')
-    dbcursor.execute(f'select id_ville from villes where nom_ville = "{formation[8]}"')
-    current_ville = dbcursor.fetchall()[0][0] #id de la ville courante
-    dbcursor.execute(f'insert ignore into lycees (uai_lycee, nom_lycee, id_ville, id_statut, coord_lycee) values ("{formation[2]}", "{formation[3]}", {current_ville}, {current_statut}, "{formation[16]}" )')
-    dbcursor.execute(f'insert into fillieres (nom_filliere) select "{formation[14]}" from dual where not exists (select * from fillieres where nom_filliere = "{formation[14]}")')
-    dbcursor.execute(f'select id_filliere from fillieres where nom_filliere = "{formation[14]}"')
-    current_filliere = dbcursor.fetchall()[0][0]
-    dbcursor.execute(f'insert ignore into formations (uai_lycee, id_filliere, pc_generale, pc_techno, pc_pro, taux_acces, lien_parcoursup) values ("{formation[2]}", {current_filliere}, {formation[88]}, {formation[90]}, {formation[92]}, {formation[112]}, "{formation[111]}")')
+        create_tables(dbcursor)
+        print("Tables crées sans erreur")
+    except sqlco.Error as error:
+        print(f"ERREUR: {error}")
 
-print("Tables remplies sans erreur")
-prepa_db.commit() #Pour valider l'insertion des valeurs
-prepa_db.close()
+def ext_remp_tables():
+    #Créer les enregistrements de la table regions
+    for region in regions_array[1:]: #Pour ne pas inclure la première ligne
+        requête = f'insert ignore into regions (id_region, nom_region) values ({region[0]}, "{region[1]}")' #insert ignore pour ne rien faire si l'enregistrement existe déjà
+        dbcursor.execute(requête)
+    #Créer les enregistrements de la table departements
+    for département in departements_array[1:]:
+        corrected_dep = département[0] 
+        try:
+            int(corrected_dep) #Si l'id peut est un nombre entier
+        except ValueError: #cas particulier des départements corses
+            if département[0][1] == 'A':
+                corrected_dep = '9001' #Corse du sud
+            else:
+                corrected_dep = '9002' #haute Corse
+        dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_dep}, "{département[1]}", {département[2]}) ')
+    #Créer les enregistrements des status, des villes, des lycées, des fillières et enfin des Formations
+    for formation in prepa_array[1:]:
+        corrected_dep = formation[4] 
+        try:
+            int(corrected_dep) #Si l'id peut est un nombre entier
+        except ValueError: #cas particulier des départements corses
+            if formation[4][1] == 'A':
+                corrected_dep = '9001' #Corse du sud
+            else:
+                corrected_dep = '9002' #haute Corse
+        dbcursor.execute(f'insert into status (nom_statut) select "{formation[1]}" from dual where not exists (select * from status where nom_statut = "{formation[1]}");')
+        dbcursor.execute(f'select id_statut from status where nom_statut = "{formation[1]}"') #Retrouver l'id (automatiquement attribuée) du statut
+        current_statut = dbcursor.fetchall()[0][0] #id du statut courant
+        dbcursor.execute(f'insert into villes (nom_ville, id_departement) select "{formation[8]}", {corrected_dep} from dual where not exists (select * from villes where nom_ville = "{formation[8]}");')
+        dbcursor.execute(f'select id_ville from villes where nom_ville = "{formation[8]}"')
+        current_ville = dbcursor.fetchall()[0][0] #id de la ville courante
+        dbcursor.execute(f'insert ignore into lycees (uai_lycee, nom_lycee, id_ville, id_statut, coord_lycee) values ("{formation[2]}", "{formation[3]}", {current_ville}, {current_statut}, "{formation[16]}" )')
+        dbcursor.execute(f'insert into fillieres (nom_filliere) select "{formation[14]}" from dual where not exists (select * from fillieres where nom_filliere = "{formation[14]}")')
+        dbcursor.execute(f'select id_filliere from fillieres where nom_filliere = "{formation[14]}"')
+        current_filliere = dbcursor.fetchall()[0][0] #id de la filliere courante
+        dbcursor.execute(f'insert into formations (uai_lycee, id_filliere, pc_generale, pc_techno, pc_pro, taux_acces, lien_parcoursup) select "{formation[2]}", {current_filliere}, {formation[88]}, {formation[90]}, {formation[92]}, {formation[112]}, "{formation[111]}" from dual where not exists (select * from formations where uai_lycee = "{formation[2]}" and id_filliere = {current_filliere})')
+
+    prepa_db.commit() #Pour valider l'insertion des valeurs
+    print("Tables remplies sans erreur")
+
+def getentries():
+    #Requête du démon extrayant l'entièreté des données de la db
+    dbcursor.execute(f'select nom_lycee, nom_filliere, nom_region, nom_departement, nom_ville, pc_generale, pc_techno, pc_pro, nom_statut, taux_acces, lien_parcoursup from formations inner join lycees on formations.uai_lycee = lycees.uai_lycee inner join fillieres on formations.id_filliere = fillieres.id_filliere inner join status on lycees.id_statut = status.id_statut inner join villes on lycees.id_ville = villes.id_ville inner join departements on villes.id_departement = departements.id_departement inner join regions on departements.id_region = regions.id_region;')
+    return dbcursor.fetchall()
