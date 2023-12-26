@@ -81,7 +81,7 @@ def create_tables(ucursor): #uscursor pour "used cursor"
     #Table des fillières (MPSI, MP2I, etc)
     ucursor.execute("""create table if not exists fillieres (
         id_filliere int primary key not null auto_increment,
-        nom_filliere varchar(50)
+        nom_filliere varchar(100)
     );""")
     #Table des formations
     ucursor.execute("""create table if not exists formations (
@@ -92,7 +92,7 @@ def create_tables(ucursor): #uscursor pour "used cursor"
         pc_techno float,
         pc_pro float,
         taux_acces float,
-        lien_parcoursup varchar(100)
+        lien_parcoursup varchar(150)
     );""")
 try:
     create_tables(dbcursor)
@@ -106,30 +106,37 @@ for region in regions_array[1:]: #Pour ne pas inclure la première ligne
     dbcursor.execute(requête)
 #Créer les enregistrements de la table departements
 for département in departements_array[1:]:
-    corrected_id = département[0] 
+    corrected_dep = département[0] 
     try:
-        int(corrected_id) #Si l'id peut est un nombre entier
+        int(corrected_dep) #Si l'id peut est un nombre entier
     except ValueError: #cas particulier des départements corses
         if département[0][1] == 'A':
-            corrected_id = '9001' #Corse du sud
+            corrected_dep = '9001' #Corse du sud
         else:
-            corrected_id = '9002' #haute Corse
-    dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_id}, "{département[1]}", {département[2]}) ')
-
+            corrected_dep = '9002' #haute Corse
+    dbcursor.execute(f'insert ignore into departements (id_departement, nom_departement, id_region) values ({corrected_dep}, "{département[1]}", {département[2]}) ')
 #Créer les enregistrements des status, des villes, des lycées, des fillières et enfin des Formations
 for formation in prepa_array[1:]:
-    #Usage du mot clef "dual"
-    corrected_id = formation[4] 
+    corrected_dep = formation[4] 
     try:
-        int(corrected_id) #Si l'id peut est un nombre entier
+        int(corrected_dep) #Si l'id peut est un nombre entier
     except ValueError: #cas particulier des départements corses
         if formation[4][1] == 'A':
-            corrected_id = '9001' #Corse du sud
+            corrected_dep = '9001' #Corse du sud
         else:
-            corrected_id = '9002' #haute Corse
+            corrected_dep = '9002' #haute Corse
     dbcursor.execute(f'insert into status (nom_statut) select "{formation[1]}" from dual where not exists (select * from status where nom_statut = "{formation[1]}");')
-    dbcursor.execute(f'insert into villes (nom_ville, id_departement) select "{formation[8]}", {corrected_id} from dual where not exists (select * from villes where nom_ville = "{formation[8]}");')
+    dbcursor.execute(f'select id_statut from status where nom_statut = "{formation[1]}"') #Retrouver l'id (automatiquement attribuée) du statut
+    current_statut = dbcursor.fetchall()[0][0] #id du statut courant
+    dbcursor.execute(f'insert into villes (nom_ville, id_departement) select "{formation[8]}", {corrected_dep} from dual where not exists (select * from villes where nom_ville = "{formation[8]}");')
+    dbcursor.execute(f'select id_ville from villes where nom_ville = "{formation[8]}"')
+    current_ville = dbcursor.fetchall()[0][0] #id de la ville courante
+    dbcursor.execute(f'insert ignore into lycees (uai_lycee, nom_lycee, id_ville, id_statut, coord_lycee) values ("{formation[2]}", "{formation[3]}", {current_ville}, {current_statut}, "{formation[16]}" )')
+    dbcursor.execute(f'insert into fillieres (nom_filliere) select "{formation[14]}" from dual where not exists (select * from fillieres where nom_filliere = "{formation[14]}")')
+    dbcursor.execute(f'select id_filliere from fillieres where nom_filliere = "{formation[14]}"')
+    current_filliere = dbcursor.fetchall()[0][0]
+    dbcursor.execute(f'insert ignore into formations (uai_lycee, id_filliere, pc_generale, pc_techno, pc_pro, taux_acces, lien_parcoursup) values ("{formation[2]}", {current_filliere}, {formation[88]}, {formation[90]}, {formation[92]}, {formation[112]}, "{formation[111]}")')
 
-
+print("Tables remplies sans erreur")
 prepa_db.commit() #Pour valider l'insertion des valeurs
 prepa_db.close()
