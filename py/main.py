@@ -10,11 +10,9 @@ window = OurWindow() #Créer une fenêtre (interne à l'application)
 window.resize(850,600)
 window.show() #Afficher la fenêtre 
 window.refresh()
-window.addentries(create_db.getentries(departement_ext="", filliere_ext=""))
 window.addfillieres(create_db.getfilliere())
 window.adddepartements(create_db.getdepartements())
 window.addregions(create_db.getregions())
-print(window.fillieres.currentText())
 window.submitbutton.clicked.connect(lambda: window.submit(tab=create_db.getentries(departement_ext=window.departement.currentText(), filliere_ext=window.fillieres.currentText(), region_ext=window.regions.currentText())))
 
 app.exec() #Démarrer l'event loop

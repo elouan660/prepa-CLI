@@ -12,12 +12,8 @@ class OurWindow(QMainWindow):
         #QCSS, Un peu différent du css
         self.setStyleSheet("""
         [cadre="true"]:hover {
-            border: 1px solid white;
+            border: 1px solid grey;
         } 
-        [cadre="true"] {
-            background-color: #303030;
-            color: white
-        }
         """)
         self.widget = QWidget() #Widget qui sera le contenu de la scrollarea
         self.area = QVBoxLayout() #Widgets Verticaux
@@ -37,7 +33,7 @@ class OurWindow(QMainWindow):
          #Combobox des regions
         self.regions = QComboBox()
          #Submit button
-        self.submitbutton = QPushButton("Envoyer")
+        self.submitbutton = QPushButton("Rechercher")
         #self.submitbutton.clicked.connect(self.submit)
         self.bigbarbox.addWidget(QLabel("Fillières:"))
         self.bigbarbox.addWidget(self.fillieres)
@@ -48,16 +44,18 @@ class OurWindow(QMainWindow):
         self.bigbarbox.addWidget(self.submitbutton)
         self.bigbar.setLayout(self.bigbarbox)
         self.bigarea.addWidget(self.bigbar)
+        self.numberofresultslabel = QLabel('Cliquez sur "Rechercher" pour lancer une recherche')
+        self.bigarea.addWidget(self.numberofresultslabel)
         self.bigarea.addWidget(self.scroller)
 
     def addentries(self, tab):
         for formation in tab:
-            #HTML4
+            #HTML4 like
             templab = QLabel(f"""
             <div>
                 <h3>{formation[0]} - {formation[1]}</h3> <br>
                 <strong><u>Région:</strong></u> {formation[2]} <strong><u>Département:</strong></u> {formation[3]} <strong><u>Ville:</strong></u> {formation[4]} <br>
-                <strong><u>Bacheliers Généraux:</strong></u> {formation[5]}% <strong><u>Bacheliers Technologiques:</strong></u> {formation[6]}% <strong><u>Bacheliers Profesionnels</strong></u> {formation[7]}% <br>
+                <strong><u>Bacheliers Généraux:</strong></u> {formation[5]}% <strong><u>Bacheliers Technologiques:</strong></u> {formation[6]}% <strong><u>Bacheliers Profesionnels:</strong></u> {formation[7]}% <br>
                 <strong><u>Statut:</strong></u> {formation[8]} <strong><u>Taux d'accès:</strong></u> {formation[9]}%
                 <a href="{formation[10]}">Lien Parcoursup</a>
                 <br>
@@ -87,8 +85,8 @@ class OurWindow(QMainWindow):
                 widget.deleteLater()
             else:
                 self.clearLayout(item.layout())
-        print(tab[0])
         self.addentries(tab)
+        self.numberofresultslabel.setText(f'{len(tab)} Résultats')
         
     def refresh(self):
         self.scroller.setWidget(self.widget)

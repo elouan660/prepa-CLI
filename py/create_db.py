@@ -154,6 +154,6 @@ def getfilliere():
     return dbcursor.fetchall()
 
 def getentries(filliere_ext="", region_ext="", departement_ext=""):
-    #Requête du démon extrayant l'entièreté des données de la db
-    dbcursor.execute(f'select nom_lycee, nom_filliere, nom_region, nom_departement, nom_ville, pc_generale, pc_techno, pc_pro, nom_statut, taux_acces, lien_parcoursup from formations inner join lycees on formations.uai_lycee = lycees.uai_lycee inner join fillieres on formations.id_filliere = fillieres.id_filliere inner join status on lycees.id_statut = status.id_statut inner join villes on lycees.id_ville = villes.id_ville inner join departements on villes.id_departement = departements.id_departement inner join regions on departements.id_region = regions.id_region where nom_filliere like "%{filliere_ext}%" and nom_region like "%{region_ext}%" and departements.id_departement like "%{departement_ext}%"')
+    #Requête du démon extrayant l'entièreté des données de la db; correction du problème des prépa PTSI confondues avec des TSI
+    dbcursor.execute(f'select nom_lycee, nom_filliere, nom_region, nom_departement, nom_ville, pc_generale, pc_techno, pc_pro, nom_statut, taux_acces, lien_parcoursup from formations inner join lycees on formations.uai_lycee = lycees.uai_lycee inner join fillieres on formations.id_filliere = fillieres.id_filliere inner join status on lycees.id_statut = status.id_statut inner join villes on lycees.id_ville = villes.id_ville inner join departements on villes.id_departement = departements.id_departement inner join regions on departements.id_region = regions.id_region where nom_filliere like "{filliere_ext}%" and nom_region like "%{region_ext}%" and departements.id_departement like "%{departement_ext}%"')
     return dbcursor.fetchall()
