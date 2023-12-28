@@ -9,11 +9,17 @@ class OurWindow(QMainWindow):
         icon = QIcon()
         icon.addFile("prepa-CLI/img/Icon.svg")
         self.setWindowIcon(icon)
-        #QCSS, Un peu différent du css
+        #QSS, Un peu différent du css
         self.setStyleSheet("""
         [cadre="true"]:hover {
             border: 1px solid grey;
         } 
+        [right="true"] {
+            qproperty-alignment: AlignRight;
+        }
+        QPushButton {
+            background-color: blue;
+        }
         """)
         self.widget = QWidget() #Widget qui sera le contenu de la scrollarea
         self.area = QVBoxLayout() #Widgets Verticaux
@@ -34,13 +40,22 @@ class OurWindow(QMainWindow):
         self.regions = QComboBox()
          #Submit button
         self.submitbutton = QPushButton("Rechercher")
-        #self.submitbutton.clicked.connect(self.submit)
-        self.bigbarbox.addWidget(QLabel("Fillières:"))
+
+        self.fillierelabel = QLabel("Fillière:")
+        self.fillierelabel.setProperty("right", True)
+        self.bigbarbox.addWidget(self.fillierelabel)
         self.bigbarbox.addWidget(self.fillieres)
-        self.bigbarbox.addWidget(QLabel("Régions:"))
+
+        self.regionslabel = QLabel("Région:")
+        self.regionslabel.setProperty("right", True)
+        self.bigbarbox.addWidget(self.regionslabel)
         self.bigbarbox.addWidget(self.regions)
-        self.bigbarbox.addWidget(QLabel("Départements:"))
+
+        self.departementlabel = QLabel("Département:")
+        self.departementlabel.setProperty("right", True)
+        self.bigbarbox.addWidget(self.departementlabel)
         self.bigbarbox.addWidget(self.departement)
+
         self.bigbarbox.addWidget(self.submitbutton)
         self.bigbar.setLayout(self.bigbarbox)
         self.bigarea.addWidget(self.bigbar)
