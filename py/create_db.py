@@ -3,13 +3,6 @@ import requests as req #Récupérer des fichiers en ligne
 import os #Interagir avec le système hôte
 import sys
 import mysql.connector as sqlco #Utiliser mysql/mariadb
-from frontend import *
-
-#Créer des dossiers
-if os.path.isdir("prepa-CLI/sql") == False:
-    os.mkdir("prepa-CLI/sql")
-if os.path.isdir("prepa-CLI/csv") == False:
-    os.mkdir("prepa-CLI/csv")
  
 def create_csv(chemin, array, delimiteur, lien):
     if os.path.isfile(chemin) == False:
@@ -26,6 +19,12 @@ regions_array = []
 create_csv('prepa-CLI/csv/regions.csv', regions_array,",","https://www.data.gouv.fr/fr/datasets/r/34fc7b52-ef11-4ab0-bc16-e1aae5c942e7" )
 departements_array = []
 create_csv('prepa-CLI/csv/departements.csv', departements_array, ",",'https://www.data.gouv.fr/fr/datasets/r/70cef74f-70b1-495a-8500-c089229c0254' )
+
+#Créer des dossiers
+if os.path.isdir("prepa-CLI/sql") == False:
+    os.mkdir("prepa-CLI/sql")
+if os.path.isdir("prepa-CLI/csv") == False:
+    os.mkdir("prepa-CLI/csv")
 
 
 try: #Se connecter au serveur sql

@@ -36,6 +36,7 @@ class OurWindow(QMainWindow):
         self.fillieres = QComboBox()
          #Combobox des départements
         self.departement = QComboBox()
+        #self.departement.view().setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
          #Combobox des regions
         self.regions = QComboBox()
          #Submit button

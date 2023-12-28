@@ -13,6 +13,7 @@ window.refresh()
 window.addfillieres(create_db.getfilliere())
 window.adddepartements(create_db.getdepartements())
 window.addregions(create_db.getregions())
+#Une fonction lamba puisqu'il faut une fonction sans paramètres en paramètre
 window.submitbutton.clicked.connect(lambda: window.submit(tab=create_db.getentries(departement_ext=window.departement.currentText(), filliere_ext=window.fillieres.currentText(), region_ext=window.regions.currentText())))
 
 app.exec() #Démarrer l'event loop
