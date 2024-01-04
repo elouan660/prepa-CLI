@@ -9,7 +9,7 @@ create_db.ext_remp_tables() #Les remplir
 window = OurWindow() #Créer une fenêtre (interne à l'application)
 window.resize(850,600)
 window.show() #Afficher la fenêtre 
-window.refresh()
+#window.refresh()
 window.addfillieres(create_db.getfilliere())
 window.adddepartements(create_db.getdepartements())
 window.addregions(create_db.getregions())

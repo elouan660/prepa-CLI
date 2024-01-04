@@ -19,6 +19,7 @@ class OurWindow(QMainWindow):
         }
         QPushButton {
             background-color: blue;
+            color: white;
         }
         """)
         self.widget = QWidget() #Widget qui sera le contenu de la scrollarea
@@ -64,6 +65,9 @@ class OurWindow(QMainWindow):
         self.bigarea.addWidget(self.numberofresultslabel)
         self.bigarea.addWidget(self.scroller)
 
+        self.scroller.setWidget(self.widget) #Mettre le widget dans la scrollarea
+        self.setCentralWidget(self.bigwidget)
+
     def addentries(self, tab):
         for formation in tab:
             #HTML4 like
@@ -103,7 +107,3 @@ class OurWindow(QMainWindow):
                 self.clearLayout(item.layout())
         self.addentries(tab)
         self.numberofresultslabel.setText(f'{len(tab)} Résultats')
-        
-    def refresh(self):
-        self.scroller.setWidget(self.widget)
-        self.setCentralWidget(self.bigwidget)
