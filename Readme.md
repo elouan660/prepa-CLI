@@ -1,0 +1,1 @@
+Ce programme créé une base de donnée mysql/mariadb recensant les CPGE scientifiques françaises à partir de https://data.enseignementsup-recherche.gouv.fr et https://data.gouv.fr
