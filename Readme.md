@@ -20,7 +20,7 @@ L'interface permet de consulter des informations sur les différentes formations
 ![Main Window](img/mainwindow.png)
 3 Combobox dans la partie supérieure de l'écran permettent d'indiquer nos critères concernant la formation souhaitée, la requête au serveur mysql n'est effectuée qui si l'on appuie sur le bouton rechercher, les résulats de recherche et le nombre de resultats sont listés dans la partie inférieure de l'écran
 ![Results Window](img/resultwindow.png)
-# Tests et Limites du programme
-
+# Tests et limites du programme
+Voir [Tests.md](Tests.md)
 
 
