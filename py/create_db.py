@@ -1,3 +1,7 @@
+#Copyright 2024 Elouan Deschamps
+#Ce fichier est publié sous licence GNU GPLv3
+#Fichier faisant la passerelle avec la base de données mysql
+#Il permet également de créer les dossiers et fichiers nécéssaires au fonctionnement du programme
 import csv #Manipuler des fichier csv
 import requests as req #Récupérer des fichiers en ligne
 import os #Interagir avec le système hôte
@@ -7,8 +11,6 @@ import mysql.connector as sqlco #Utiliser mysql/mariadb
 path = "" #Le chemin relatif par défaut est celui duquel l'utilisateur lance sa commande; modifier au besoin cette ligne
 
 #Créer des dossiers
-if os.path.isdir(f"{path}sql") == False:
-    os.mkdir(f"{path}sql")
 if os.path.isdir(f"{path}csv") == False:
     os.mkdir(f"{path}csv")
 

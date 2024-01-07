@@ -1,3 +1,6 @@
+#Copyright 2024 Elouan Deschamps
+#Ce fichier est publié sous licence GNU GPLv3
+#Fichier "pont" entre la base de données et l'interface graphique
 import create_db
 import sys
 from PySide6.QtWidgets import QApplication

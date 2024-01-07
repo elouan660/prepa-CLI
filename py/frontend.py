@@ -1,13 +1,16 @@
+#Copyright 2024 Elouan Deschamps
+#Ce fichier est publié sous licence GNU GPLv3
+#Fichier contenant la classe gérant la fenêtre principale
 from PySide6.QtWidgets import QMainWindow, QPushButton, QScrollArea, QLabel, QVBoxLayout, QHBoxLayout, QWidget, QComboBox
 from PySide6.QtCore import Qt, QRect, QLine
 from PySide6.QtGui import QIcon, QPixmap
 
-class OurWindow(QMainWindow):
+class OurWindow(QMainWindow): #Héritage de QMainWindow
     def __init__(self):
         super().__init__()
         self.setWindowTitle("prepa_db browser") #Titre de la fenêtre
         icon = QIcon()
-        icon.addFile("prepa-CLI/img/Icon.svg")
+        icon.addFile("img/Icon.svg")
         self.setWindowIcon(icon)
         #QSS, Un peu différent du css
         self.setStyleSheet("""
