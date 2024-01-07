@@ -9,7 +9,7 @@ Du SQL et du python sont employés dans le projet, ainsi que des modules python 
 
 Prérequis:
 * Un ordinateur hôte sous GNU/Linux ou Windows (Non testé sur d'autres systèmes)
-* Un serveur mysql/mariadb lancé sur la machine hôte avec un utlisateur `elouand` de mot de passe `elouan`
+* Un serveur mysql/mariadb lancé sur la machine hôte avec un utlisateur `elouand` de mot de passe `elouan` avec toutes les permissions OU  modifier les attributs de [prepa_db](py/create_db.py) (ligne 36)
 * Un environnement graphique supportant Qt6
 * Python en version 3 et tous les modules listés ci-dessus
 # Schéma relationnel
