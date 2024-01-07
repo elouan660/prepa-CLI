@@ -1,1 +1,0 @@
-Départements corses: mysql.connector.errors.ProgrammingError: 1054 (42S22): Unknown column '2A' in 'field list'
