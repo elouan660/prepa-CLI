@@ -2,11 +2,12 @@ Copyright 2024 Elouan Deschamps TG1
 Ce programme créé une base de donnée mysql/mariadb recensant les CPGE scientifiques françaises à partir de https://data.enseignementsup-recherche.gouv.fr et https://data.gouv.fr et permet son exploration grâce à une interface écrite avec Qt
 # Technologies Employées, dépendances et prérequis
 Du SQL et du python sont employés dans le projet, ainsi que des modules python dont:
-* Pyside6
+* pyside6
 * sys
+* os
 * requests
 * csv
-* mysql.connector
+* mysql-connector-python
 
 Prérequis:
 * Un ordinateur hôte sous GNU/Linux ou Windows (Non testé sur d'autres systèmes)
